@@ -1,0 +1,27 @@
+{
+  "name": "gql-practice-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magic8baller/gql-mongo-playground.git"
+  },
+  "keywords": [],
+  "author": "Leslie T",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/magic8baller/gql-mongo-playground/issues"
+  },
+  "homepage": "https://github.com/magic8baller/gql-mongo-playground#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.5.8",
+    "nodemon": "^1.19.4"
+  }
+}
