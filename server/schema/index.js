@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const _ = require('lodash');
+// const _ = require('lodash');
 // dummy data
 const usersData = [
 	{id: '1', name: 'Bond', age: 36, profession: 'Programmer'},
@@ -77,19 +77,20 @@ const UserType = new GraphQLObjectType({
 			type: new GraphQLList(PostType),
 			resolve (parent, args) {
 				//want ALL posts belong to Userr
-				return _.filter(postsData, {userId: parent.id});
+				// return _.filter(postsData, {userId: parent.id});
+				return postsData.filter(post => post.userId === parent.id)
 			}
 		},
 		hobbies: {
 			type: new GraphQLList(HobbyType),
 			resolve (parent, args) {
-				return _.filter(hobbiesData, {userId: parent.id})
+				return hobbiesData.filter(hobby => hobby.userId === parent.id)
 			}
 		},
 		personalities: {
 			type: new GraphQLList(PersonalityType),
 			resolve (parent, args) {
-				return _.filter(personalitiesData, {userId: parent.id})
+				return personalitiesData.filter(personality => personality.userId === parent.id)
 			}
 		}
 
@@ -106,7 +107,7 @@ const HobbyType = new GraphQLObjectType({
 		user: {
 			type: UserType,
 			resolve (parent, args) {
-				return _.find(usersData, {id: parent.userId})
+				return usersData.find(user => user.userId === parent.id)
 			}
 		}
 	})
@@ -122,7 +123,8 @@ const PersonalityType = new GraphQLObjectType({
 		user: {
 			type: UserType,
 			resolve (parent, args) {
-				return _.find(usersData, {id: parent.userId})
+				return usersData.find(user => user.id === parent.id)
+
 			}
 		}
 	})
@@ -138,7 +140,7 @@ const PostType = new GraphQLObjectType({
 			type: UserType,
 			resolve (parent, args) {
 				//parent = userId as ref to User Type
-				return _.find(usersData, {id: parent.userId})
+				return usersData.find(user => user.id === parent.userId)
 
 
 			}
@@ -156,7 +158,7 @@ const RootQuery = new GraphQLObjectType({
 			args: {id: {type: GraphQLID}},
 
 			resolve (parent, args) {
-				return _.find(usersData, {id: args.id});
+				return usersData.find(user => user.id === args.id);
 				//resolve w data u have from rootquery
 				//get+ ACTUAL RETURN data from db/other datasource
 
@@ -168,21 +170,21 @@ const RootQuery = new GraphQLObjectType({
 
 			resolve (parent, args) {
 				//return hobby data
-				return _.find(hobbiesData, {id: args.id})
+				return hobbiesData.find(hobby => hobby.id === args.id)
 			}
 		},
 		post: {
 			type: PostType,
 			args: {id: {type: GraphQLID}},
 			resolve (parent, args) {
-				return _.find(postsData, {id: args.id})
+				return postsData.find(post => post.id === args.id)
 			}
 		},
 		personality: {
 			type: PersonalityType,
 			args: {id: {type: GraphQLID}},
 			resolve (parent, args) {
-				return _.find(personalitiesData, {id: args.id})
+				return personalitiesData.find(personality => personality.id === args.id)
 			}
 		}
 	}
