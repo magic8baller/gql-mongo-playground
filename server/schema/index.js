@@ -72,7 +72,13 @@ const HobbyType = new GraphQLObjectType({
 	fields: () => ({
 		id: {type: GraphQLID},
 		title: {type: GraphQLString},
-		description: {type: GraphQLString}
+		description: {type: GraphQLString},
+		user: {
+			type: UserType,
+			resolve (parent, args) {
+				return _.find(usersData, {id: parent.userId})
+			}
+		}
 	})
 });
 const PostType = new GraphQLObjectType({
