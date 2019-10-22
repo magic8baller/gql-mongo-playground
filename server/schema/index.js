@@ -41,6 +41,13 @@ const postsData = [
 	{id: '10', comment: 'how to get people to give u their money without them realizing', userId: '4'}
 ]
 
+const personalitiesData = [
+	{id: '1', sign: 'Aries', selfAware: false, traits: 'impulsive wild fun', userId: '200'},
+	{id: '2', sign: 'Virgo', selfAware: true, traits: 'self loathing overly critical introvert', userId: '4'},
+	{id: '3', sign: 'Saggitarius', selfAware: false, traits: 'outgoing unreliable transient', userId: '3'},
+	{id: '4', sign: 'Leo', selfAware: false, traits: 'feisty combative party hard', userId: '100'},
+	{id: '5', sign: 'Libra', selfAware: true, traits: 'balanced focused practical', userId: '3'},
+]
 
 const {
 	GraphQLObjectType,
@@ -48,6 +55,7 @@ const {
 	GraphQLString,
 	GraphQLInt,
 	GraphQLSchema,
+	GraphQLBoolean,
 	GraphQLList
 } = graphql
 
@@ -81,6 +89,22 @@ const HobbyType = new GraphQLObjectType({
 		}
 	})
 });
+const PersonalityType = new GraphQLObjectType({
+	name: 'Personality',
+	description: 'Personality description',
+	fields: () => ({
+		id: {type: GraphQLID},
+		traits: {type: GraphQLString},
+		sign: {type: GraphQLString},
+		selfAware: {type: GraphQLBoolean},
+		user: {
+			type: UserType,
+			resolve (parent, args) {
+				return _.find(usersData, {id: parent.userId})
+			}
+		}
+	})
+})
 const PostType = new GraphQLObjectType({
 	name: 'Post',
 	description: 'Post description',
@@ -130,6 +154,13 @@ const RootQuery = new GraphQLObjectType({
 			args: {id: {type: GraphQLID}},
 			resolve (parent, args) {
 				return _.find(postsData, {id: args.id})
+			}
+		},
+		personality: {
+			type: PersonalityType,
+			args: {id: {type: GraphQLID}},
+			resolve (parent, args) {
+				return _.find(personalitiesData, {id: args.id})
 			}
 		}
 	}
