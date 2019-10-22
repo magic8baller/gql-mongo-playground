@@ -46,7 +46,7 @@ const personalitiesData = [
 	{id: '2', sign: 'Virgo', selfAware: true, traits: 'self loathing overly critical introvert', userId: '4'},
 	{id: '3', sign: 'Saggitarius', selfAware: false, traits: 'outgoing unreliable transient', userId: '3'},
 	{id: '4', sign: 'Leo', selfAware: false, traits: 'feisty combative party hard', userId: '100'},
-	{id: '5', sign: 'Libra', selfAware: true, traits: 'balanced focused practical', userId: '3'},
+	{id: '5', sign: 'Libra', selfAware: true, traits: 'balanced focused practical', userId: '2'},
 ]
 
 const {
@@ -71,6 +71,28 @@ const UserType = new GraphQLObjectType({
 		name: {type: GraphQLString},
 		age: {type: GraphQLInt},
 		profession: {type: GraphQLString},
+		//all Posts**(many) that BELONG TO Userr(one) => use GraphQLList types
+
+		posts: {
+			type: new GraphQLList(PostType),
+			resolve (parent, args) {
+				//want ALL posts belong to Userr
+				return _.filter(postsData, {userId: parent.id});
+			}
+		},
+		hobbies: {
+			type: new GraphQLList(HobbyType),
+			resolve (parent, args) {
+				return _.filter(hobbiesData, {userId: parent.id})
+			}
+		},
+		personalities: {
+			type: new GraphQLList(PersonalityType),
+			resolve (parent, args) {
+				return _.filter(personalitiesData, {userId: parent.id})
+			}
+		}
+
 
 	})
 });
@@ -131,10 +153,10 @@ const RootQuery = new GraphQLObjectType({
 	fields: {
 		user: {
 			type: UserType,
-			args: {name: {type: GraphQLString}},
+			args: {id: {type: GraphQLID}},
 
 			resolve (parent, args) {
-				return _.find(usersData, {name: args.name});
+				return _.find(usersData, {id: args.id});
 				//resolve w data u have from rootquery
 				//get+ ACTUAL RETURN data from db/other datasource
 
