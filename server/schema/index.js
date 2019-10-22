@@ -80,7 +80,26 @@ const PostType = new GraphQLObjectType({
 	description: 'Post description',
 	fields: () => ({
 		id: {type: GraphQLID},
-		comment: {type: GraphQLString}
+		comment: {type: GraphQLString},
+		user: {
+			type: UserType,
+			resolve (parent, args) {
+				//parent = userId as ref to User Type
+				return _.find(usersData, {id: parent.userId})
+				// {
+				// 	post(id: 1){
+				// 		id
+				// 		comment
+				// 		user {
+				// 			name
+				// 			profession
+				// 			id
+				// 		}
+				// 	}
+				// }
+
+			}
+		}
 	})
 })
 //2 - RootQuery = path lets us traverse the query (how is it mapped out so we can THEN start working with server)
