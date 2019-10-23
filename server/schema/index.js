@@ -147,7 +147,7 @@ const PostType = new GraphQLObjectType({
 		}
 	})
 })
-//2 - RootQuery = path lets us traverse the query (how is it mapped out so we can THEN start working with server)
+//2 - RootQuery = FETCH DATA -path lets us traverse the query (how is it mapped out so we can THEN start working with server)
 //structure connecttions/queries
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQueryType',
@@ -190,6 +190,90 @@ const RootQuery = new GraphQLObjectType({
 	}
 });
 
+//MUTATIONS = modify data;
+const Mutation = new GraphQLObjectType({
+	name: 'Mutation',
+	fields: {
+		createUser: {
+			type: UserType,
+			args: {
+				id: {type: GraphQLID},
+				name: {type: GraphQLString},
+				age: {type: GraphQLInt},
+				profession: {type: GraphQLString}
+			},
+			//create User object - saving in memory, not in DB yet
+			resolve (parent, args) {
+				let user = {
+					id: args.id,
+					name: args.name,
+					age: args.age,
+					profession: args.profession
+				}
+				return user;
+			}
+		},
+		// 		mutation{
+		//   createUser(name: "Leslie",age: 30, profession: "self-employed") {
+		//     name
+		//     age
+		//     profession
+		//     id
+		//   }
+		// }
+		createPost: {
+			type: PostType,
+			args: {
+				id: {type: GraphQLID},
+				comment: {type: GraphQLString}
+			},
+			resolve (parent, args) {
+				let post = {
+					id: args.id,
+					comment: args.comment
+				}
+				return post
+			}
+		},
+		createPersonality: {
+			type: PersonalityType,
+			args: {
+				id: {type: GraphQLID},
+				traits: {type: GraphQLString},
+				sign: {type: GraphQLString},
+				selfAware: {type: GraphQLBoolean}
+			},
+			resolve (parent, args) {
+				let personality = {
+					id: args.id,
+					traits: args.traits,
+					sign: args.sign,
+					selfAware: args.selfAware
+				}
+				return personality
+			}
+		},
+		createHobby: {
+			type: HobbyType,
+			args: {
+				id: {type: GraphQLID},
+				title: {type: GraphQLString},
+				description: {type: GraphQLString}
+			},
+			resolve (parent, args) {
+				let hobby = {
+					id: args.id,
+					title: args.title,
+					description: args.description
+				}
+
+				return hobby
+			}
+		}
+	}
+})
+
 module.exports = new GraphQLSchema({
-	query: RootQuery
+	query: RootQuery,
+	mutation: Mutation
 });
