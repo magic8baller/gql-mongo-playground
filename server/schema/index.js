@@ -224,13 +224,14 @@ const Mutation = new GraphQLObjectType({
 		createPost: {
 			type: PostType,
 			args: {
-				id: {type: GraphQLID},
-				comment: {type: GraphQLString}
+				comment: {type: GraphQLString},
+				userId: {type: GraphQLID}
+
 			},
 			resolve (parent, args) {
 				let post = {
-					id: args.id,
-					comment: args.comment
+					comment: args.comment,
+					userId: args.userId
 				}
 				return post
 			}
@@ -238,33 +239,47 @@ const Mutation = new GraphQLObjectType({
 		createPersonality: {
 			type: PersonalityType,
 			args: {
-				id: {type: GraphQLID},
 				traits: {type: GraphQLString},
 				sign: {type: GraphQLString},
-				selfAware: {type: GraphQLBoolean}
+				selfAware: {type: GraphQLBoolean},
+				userId: {type: GraphQLID}
 			},
 			resolve (parent, args) {
 				let personality = {
-					id: args.id,
 					traits: args.traits,
 					sign: args.sign,
-					selfAware: args.selfAware
+					selfAware: args.selfAware,
+					userId: args.userId
 				}
 				return personality
 			}
 		},
+
+		//query= createPersonality (userId: 2, traits: "the lame ones", sign: "capricorn", selfAware: false) {
+
+		// 	traits
+		// 	sign
+		// 	selfAware
+		// 	user {
+		// 		personalities {
+		// 			traits
+		// id
+		// 		}
+		// 	}
+		// }
+
 		createHobby: {
 			type: HobbyType,
 			args: {
-				id: {type: GraphQLID},
 				title: {type: GraphQLString},
-				description: {type: GraphQLString}
+				description: {type: GraphQLString},
+				userId: {type: GraphQLID}
 			},
 			resolve (parent, args) {
 				let hobby = {
-					id: args.id,
 					title: args.title,
-					description: args.description
+					description: args.description,
+					userId: args.userId
 				}
 
 				return hobby
